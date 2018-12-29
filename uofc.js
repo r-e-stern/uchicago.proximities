@@ -62,7 +62,7 @@ var OPARR = fracture(UPLEFT,BOTRIGHT,65,70);
 console.log(OPARR);
 var w  = (IMGWIDTH/OPARR[0].length-1)+"px";
 var h = (IMGHEIGH/OPARR.length-1)+"px";
-
+var COORDTOMET = 93175.39171766826;
 function minmax(strfx){
     var b = 0;
     var a = 10e30;
@@ -90,13 +90,14 @@ console.log(min, max);
 $(document).ready(function(){
     for(var i=0; i<OPARR.length; i++){
         for(var j=0; j<OPARR[0].length; j++){
-                $("body").append("<div style='background-color:"+redness(OPARR[i][j].score)+"' data-score='"+OPARR[i][j].score+"'>"
-                    +"<span><b>Score: </b><em style='color:"+redness(OPARR[i][j].score)+"'>"+Math.floor(max*93175.39171766826-OPARR[i][j].score*93175.39171766826)+"</em><hr/>"
-                    +"<b>Campus Center: </b>"+Math.floor(OPARR[i][j].central*93175.39171766826)+"m<br/>"
-                    +"<b>Dining: </b>"+Math.floor(OPARR[i][j].dining[0]*93175.39171766826)+"m<br/><i>"+OPARR[i][j].dining[1]+"</i><br/>"
-                    +"<b>Regenstein: </b>"+Math.floor(OPARR[i][j].library*93175.39171766826)+"m<br/>"
-                    +"<b>Metra: </b>"+Math.floor(OPARR[i][j].metra[0]*93175.39171766826)+"m<br/><i>"+OPARR[i][j].metra[1]+"</i><br/>"
-                    +"<strong>"+(Math.floor(OPARR[i][j].lat*100000)/100000)+"&deg;N, "+(Math.floor(-OPARR[i][j].long*100000)/100000)+"&deg;W</strong>"+
+            var curr = OPARR[i][j];
+            $("body").append("<div style='background-color:"+redness(curr.score)+"' data-score='"+curr.score+"'>"
+                    +"<span><b>Score: </b><em style='color:"+redness(curr.score)+"'>"+Math.floor(max*COORDTOMET-curr.score*COORDTOMET)+"</em><hr/>"
+                    +"<b>Campus Center: </b>"+Math.floor(curr.central*COORDTOMET)+"m<br/>"
+                    +"<b>Dining: </b>"+Math.floor(curr.dining[0]*COORDTOMET)+"m<br/><i>"+curr.dining[1]+"</i><br/>"
+                    +"<b>Regenstein: </b>"+Math.floor(curr.library*COORDTOMET)+"m<br/>"
+                    +"<b>Metra: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
+                    +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong>"+
                     "</div>");
 
         }
