@@ -1,0 +1,72 @@
+body{
+    margin:0px;
+    width: 785px;
+    background-image: url("uchicago.PNG");
+    background-repeat: no-repeat;
+}
+div{
+    float:left;
+    padding: 0px;
+    margin: 0px;
+    opacity: .45;
+    z-index: 5;
+    border: .5px solid transparent;
+}
+div:hover{
+    border-color: white;
+    opacity: .8
+}
+div span{
+    display: none;
+    z-index: 100;
+}
+div:hover span{
+    border: 1px solid white;
+    background-color: rgba(0,0,0,.65);
+    padding: 5px;
+    color: white;
+    display: block;
+    font-family: Helvetica, sans-serif;
+    position: absolute;
+    z-index: 100;
+    width: 200px;
+    left:550px;
+    top:5px;
+    opacity: 1;
+    font-size: 13px;
+    font-weight: bold;
+    user-select: none;
+}
+i{
+    padding-left:10px;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+}
+b{
+    font-weight: normal;
+}
+.prev{
+    border-color: rgba(255,255,255,.6);
+}
+.prev2{
+    border-color: rgba(255,255,255,.3);
+}
+hr{
+    border: .5px solid white;
+}
+em{
+    font-style: normal;
+    text-shadow: -.5px 0 black, 0 .5px black, .5px 0 black, 0 -.5px black;
+    font-size: 16px;
+    font-weight: bolder;
+}
+strong{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    display: block;
+    float: right;
+    padding-top: 5px;
+    font-family: "Consolas", monospace;
+}
