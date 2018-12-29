@@ -62,18 +62,25 @@ var OPARR = fracture(UPLEFT,BOTRIGHT,65,70);
 console.log(OPARR);
 var w  = (IMGWIDTH/OPARR[0].length-1)+"px";
 var h = (IMGHEIGH/OPARR.length-1)+"px";
-var min = 10e30;
-var max = 0;
-for(var i=0; i<OPARR.length; i++){
-    for(var j=0; j<OPARR[0].length; j++){
-        if(OPARR[i][j].score<min){
-            min=OPARR[i][j].score;
-        }
-        if(OPARR[i][j].score>max){
-            max=OPARR[i][j].score;
+
+function minmax(strfx){
+    var b = 0;
+    var a = 10e30;
+    for(var i=0; i<OPARR.length; i++){
+        for(var j=0; j<OPARR[0].length; j++){
+            if(eval("OPARR[i][j]"+strfx)<a){
+                a=eval("OPARR[i][j]"+strfx);
+            }
+            if(eval("OPARR[i][j]"+strfx)>b){
+                b=eval("OPARR[i][j]"+strfx);
+            }
         }
     }
+    return [a,b]
 }
+var m = minmax(".score");
+var min = m[0];
+var max = m[1];
 function redness(s){
     var range = max-min;
     var red = 100-((s-min)/range)*100;
@@ -94,6 +101,7 @@ $(document).ready(function(){
 
         }
     }
+    $("body").append("<button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button>");
     $("div").css({"width" : w,
                   "height": h});
     $("div").hover(function(){
@@ -105,8 +113,11 @@ $(document).ready(function(){
         $(this).prevAll().slice(OPARR[0].length-2,OPARR[0].length-1).toggleClass("prev2");
         $(this).nextAll().slice(OPARR[0].length,OPARR[0].length+1).toggleClass("prev2");
         $(this).prevAll().slice(OPARR[0].length,OPARR[0].length+1).toggleClass("prev2");
-    })
-
+    });
+    $("button").click(function(e){
+        e.stopPropagation();
+        btPress($(this).attr("id"));
+    });
 });
 //from https://gist.github.com/mlocati/7210513
 function perc2color(perc) {
@@ -121,4 +132,35 @@ function perc2color(perc) {
     }
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
+}
+function blueGradient(min,max,val){
+    var b = (1-((val-min)/(max-min)))*256;
+    return "rgba(0,0,"+b+","+(1-((val-min)/(max-min)))+")";
+}
+function btPress(id){
+    if(id=="m"){
+        var m = minmax(".metra[0]");
+    }else if(id=="c"){
+        var m = minmax(".central");
+    }else if(id=="d"){
+        var m = minmax(".dining[0]");
+    }else if(id=="r"){
+        var m = minmax(".library");
+    }else if(id=="s"){
+        location.reload();
+    }
+    for(var i=0; i<OPARR.length; i++){
+        for(var j=0; j<OPARR[0].length; j++){
+            var curr = $("div").slice(i*OPARR[0].length+j,i*OPARR[0].length+j+1);
+            if(id=="m"){
+                curr.css("background-color",blueGradient(m[0],m[1],OPARR[i][j].metra[0]));
+            }else if(id=="c"){
+                curr.css("background-color",blueGradient(m[0],m[1],OPARR[i][j].central));
+            }else if(id=="d"){
+                curr.css("background-color",blueGradient(m[0],m[1],OPARR[i][j].dining[0]));
+            }else if(id=="r"){
+                curr.css("background-color",blueGradient(m[0],m[1],OPARR[i][j].library));
+            }
+        }
+    }
 }
