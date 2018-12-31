@@ -22,7 +22,7 @@ div span{
 }
 div:hover span{
     border: 1px solid white;
-    background-color: rgba(0,0,0,.65);
+    background-color: rgba(0,0,0,.55);
     padding: 5px;
     color: white;
     display: block;
@@ -30,7 +30,7 @@ div:hover span{
     position: absolute;
     z-index: 100;
     width: 200px;
-    left:550px;
+    left:560px;
     top:5px;
     opacity: 1;
     font-size: 13px;

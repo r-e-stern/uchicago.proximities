@@ -65,15 +65,13 @@ var h = (IMGHEIGH/OPARR.length-1)+"px";
 var COORDTOMET = 93175.39171766826;
 function minmax(strfx){
     var b = 0;
-    var a = 10e30;
-    for(var i=0; i<OPARR.length; i++){
-        for(var j=0; j<OPARR[0].length; j++){
-            if(eval("OPARR[i][j]"+strfx)<a){
-                a=eval("OPARR[i][j]"+strfx);
-            }
-            if(eval("OPARR[i][j]"+strfx)>b){
-                b=eval("OPARR[i][j]"+strfx);
-            }
+    var a = 1e15;
+    for (var i=0, j=0; i<OPARR.length && j<OPARR[0].length; j++, i=(j==OPARR[0].length)?i+1:i,j=(j==OPARR[0].length)?j=0:j) {
+        if(eval("OPARR[i][j]"+strfx)<a){
+            a=eval("OPARR[i][j]"+strfx);
+        }
+        if(eval("OPARR[i][j]"+strfx)>b){
+            b=eval("OPARR[i][j]"+strfx);
         }
     }
     return [a,b]
@@ -88,24 +86,21 @@ function redness(s){
 }
 console.log(min, max);
 $(document).ready(function(){
-    for(var i=0; i<OPARR.length; i++){
-        for(var j=0; j<OPARR[0].length; j++){
-            var curr = OPARR[i][j];
-            $("body").append("<div style='background-color:"+redness(curr.score)+"' data-score='"+curr.score+"'>"
-                    +"<span><b>Score: </b><em style='color:"+redness(curr.score)+"'>"+Math.floor(max*COORDTOMET-curr.score*COORDTOMET)+"</em><hr/>"
-                    +"<b>Campus Center: </b>"+Math.floor(curr.central*COORDTOMET)+"m<br/>"
-                    +"<b>Dining: </b>"+Math.floor(curr.dining[0]*COORDTOMET)+"m<br/><i>"+curr.dining[1]+"</i><br/>"
-                    +"<b>Regenstein: </b>"+Math.floor(curr.library*COORDTOMET)+"m<br/>"
-                    +"<b>Metra: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
-                    +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong>"+
-                    "</div>");
-
-        }
+    for (var i=0, j=0; i<OPARR.length && j<OPARR[0].length; j++, i=(j==OPARR[0].length)?i+1:i,j=(j==OPARR[0].length)?j=0:j) {
+        var curr = OPARR[i][j];
+        $("body").append("<div style='background-color:"+redness(curr.score)+"' data-score='"+curr.score+"'>"
+            +"<span><b>Score: </b><em style='color:"+redness(curr.score)+"'>"+Math.floor(max*COORDTOMET-curr.score*COORDTOMET)+"</em><hr/>"
+            +"<b>Campus Center: </b>"+Math.floor(curr.central*COORDTOMET)+"m<br/>"
+            +"<b>Dining: </b>"+Math.floor(curr.dining[0]*COORDTOMET)+"m<br/><i>"+curr.dining[1]+"</i><br/>"
+            +"<b>Regenstein: </b>"+Math.floor(curr.library*COORDTOMET)+"m<br/>"
+            +"<b>Metra: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
+            +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong>"+
+            "</div>");
     }
     $("body").append("<button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button>");
     $("div").css({"width" : w,
-                  "height": h});
-    $("div").hover(function(){
+                  "height": h})
+        .hover(function(){
         $(this).prev().toggleClass("prev");
         $(this).next().toggleClass("prev");
         $(this).nextAll().slice(OPARR[0].length-1,OPARR[0].length).toggleClass("prev");
