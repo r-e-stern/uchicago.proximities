@@ -14,7 +14,7 @@ div{
 }
 div:hover{
     border-color: white;
-    opacity: .8
+    opacity: 1;
 }
 div span{
     display: none;
