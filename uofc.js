@@ -9,6 +9,12 @@ var CENTRAL = new Place(41.78959, -87.59967);
 var DINING = [[new Place(41.79465, -87.59866),"Campus North Residential Commons"],
               [new Place(41.79192, -87.59846),"Bartlett Dining Commons"],
               [new Place(41.78507, -87.60028),"Arley D. Cathey Dining Commons"]];
+var RESIDENCES = [[new Place(41.79301, -87.59982),"Max Palevsky Residential Commons"],
+                  [new Place(41.78544, -87.60028),"Burton-Judson Courts"],
+                  [new Place(41.79107, -87.60054),"Snell-Hitchcock Hall"],
+                  [new Place(41.78458, -87.60031),"Renee Granville-Grossman Residential Commons"],
+                  [new Place(41.78822, -87.59088),"International House"],
+                  [new Place(41.79465, -87.59866),"Campus North Residential Commons"]];
 var THEREG = new Place(41.79227, -87.59995);
 var IMGWIDTH = 783;
 var IMGHEIGH = 728;
@@ -110,6 +116,12 @@ $(document).ready(function(){
         $(this).nextAll().slice(OPARR[0].length,OPARR[0].length+1).toggleClass("prev2");
         $(this).prevAll().slice(OPARR[0].length,OPARR[0].length+1).toggleClass("prev2");
     });
+    for(var i=0; i<RESIDENCES.length; i++){
+        highlight(RESIDENCES[i][0],OPARR,RESIDENCES[i][1]);
+    }
+    highlight(DINING[1][0],OPARR,DINING[1][1]);
+    highlight(DINING[2][0],OPARR,DINING[2][1]);
+    highlight(THEREG,OPARR,"The Joseph Regenstein Library");
     $("button").click(function(e){
         e.stopPropagation();
         btPress($(this).attr("id"));
@@ -159,4 +171,17 @@ function btPress(id){
             }
         }
     }
+}
+function highlight(object, array, name){
+    var min = new Place(40,-80).to(object);
+    var coords = [];
+    for (var i=0, j=0; i<array.length && j<array[0].length; j++, i=(j==array[0].length)?i+1:i,j=(j==array[0].length)?j=0:j) {
+        if(array[i][j].to(object) < min){
+            min = array[i][j].to(object);
+            coords = [i,j];
+        }
+    }
+    console.log("div:nth-child("+(i*array[0].length+j+1)+")");
+    $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+")").css("border-color","black");
+    $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+") span hr").before("<br/><i class='res'>"+name+"</i>");
 }
