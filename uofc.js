@@ -48,7 +48,12 @@ function Fragment(l,k){
     this.dining = this.d();
     this.metra = this.m();
     this.s = function(){
-        var p = Math.pow(this.ancestral,.3333)*Math.pow(this.central,3)*Math.pow(this.dining[0],3)*Math.pow(this.library,2)*Math.pow(this.metra[0],1);
+        //var p = Math.pow(this.ancestral,.3333)*Math.pow(this.central,3)*Math.pow(this.dining[0],3)*Math.pow(this.library,2)*Math.pow(this.metra[0],1);
+        //return Math.pow(p,1/9.3333);
+        //var p = this.ancestral*.3333333+this.central*3+this.dining[0]*3+this.library*2+this.metra[0];
+        //return p/9.3333;
+        var OFFSET = 0.00107324475;
+        var p = Math.pow(this.ancestral+OFFSET,.3333)*Math.pow(this.central+OFFSET,3)*Math.pow(this.dining[0]+OFFSET,3)*Math.pow(this.library+OFFSET,2)*Math.pow(this.metra[0]+OFFSET,1);
         return Math.pow(p,1/9.3333);
     };
     this.score = this.s();
@@ -103,7 +108,7 @@ $(document).ready(function(){
             +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong>"+
             "</div>");
     }
-    $("body").append("<button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button>");
+    $("body").append("<nav><button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button></nav>");
     $("div").css({"width" : w,
                   "height": h})
         .hover(function(){
@@ -126,6 +131,10 @@ $(document).ready(function(){
         e.stopPropagation();
         btPress($(this).attr("id"));
     });
+    $(window).resize(function(){
+        $("body").css("zoom",$(window).height()/IMGHEIGH);
+    });
+    $(window).resize();
 });
 //from https://gist.github.com/mlocati/7210513
 function perc2color(perc) {
@@ -181,7 +190,6 @@ function highlight(object, array, name){
             coords = [i,j];
         }
     }
-    console.log("div:nth-child("+(i*array[0].length+j+1)+")");
     $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+")").css("border-color","black");
     $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+") span hr").before("<br/><i class='res'>"+name+"</i>");
 }

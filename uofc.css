@@ -3,6 +3,7 @@ body{
     width: 785px;
     background-image: url("uchicago.PNG");
     background-repeat: no-repeat;
+    background-size: auto 100%;
 }
 div{
     float:left;
@@ -73,17 +74,24 @@ strong{
 button{
     margin-top: 5px;
     margin-left: 5px;
-    background-color: rgba(0,0,0,.3);
     padding: 5px;
-    color: black;
-    border: 1px solid black;
+    color: white;
     outline: none;
+    border: 1px solid white;
+    background-color: rgba(0,0,0,.55);
+    z-index: 100;
 }
 button:hover{
-    background-color: rgba(0,0,0,.1);
+    background-color: rgba(0,0,0,1);
 }
 i.res{
     padding-left: 0px;
     font-size: 13px;
     font-weight: bold;
+}
+nav{
+    position: absolute;
+    top:685px;
+    padding: 4px;
+    padding-bottom: none;
 }
