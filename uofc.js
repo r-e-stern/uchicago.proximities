@@ -135,6 +135,39 @@ $(document).ready(function(){
         $("body").css("zoom",$(window).height()/IMGHEIGH);
     });
     $(window).resize();
+    $(document).keypress(function(e){
+        if(e.ctrlKey && e.which == 19){
+            var hei = OPARR.length;
+            var len = OPARR[0].length;
+            for (var i=0, j=0; i<hei && j<len; j++, i=(j==len)?i+1:i,j=(j==len)?j=0:j) {
+                var k = i*len + j;
+                $("div").slice(k,k+1).attr("data-grouping",categorize(OPARR[i][j].score,min,max,20).toString());
+            }
+            for (var i=0, j=0; i<hei && j<len; j++, i=(j==len)?i+1:i,j=(j==len)?j=0:j) {
+                var k = i*len + j;
+                if((k-len) >= 0){
+                    if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k-len,k-len+1).attr("data-grouping")){
+                        $("div").slice(k,k+1).css("border-top","none");
+                    }
+                }
+                if((k+len) < hei*len){
+                    if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k+len,k+len+1).attr("data-grouping")){
+                        $("div").slice(k,k+1).css("border-bottom","none");
+                    }
+                }
+                if(((k+1)%len) != 0){
+                    if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k+1,k+2).attr("data-grouping")){
+                        $("div").slice(k,k+1).css("border-right","none");
+                    }
+                }
+                if((k%len) != 0){
+                    if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k-1,k).attr("data-grouping")){
+                        $("div").slice(k,k+1).css("border-left","none");
+                    }
+                }
+            }
+        }
+    });
 });
 //from https://gist.github.com/mlocati/7210513
 function perc2color(perc) {
@@ -192,4 +225,7 @@ function highlight(object, array, name){
     }
     $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+")").css("border-color","black");
     $("div:nth-child("+(coords[0]*array[0].length+coords[1]+1)+") span hr").before("<br/><i class='res'>"+name+"</i>");
+}
+function categorize(score,min,max,segs){
+    return Math.floor(((score-min)/(max-min)*(segs-1)));
 }
