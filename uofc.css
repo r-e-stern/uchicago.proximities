@@ -13,7 +13,7 @@ div{
     z-index: 5;
     border: .5px solid transparent;
 }
-div:hover{
+div:hover, div.cohover{
     border-color: white;
     opacity: 1;
 }

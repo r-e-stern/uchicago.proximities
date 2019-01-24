@@ -48,10 +48,6 @@ function Fragment(l,k){
     this.dining = this.d();
     this.metra = this.m();
     this.s = function(){
-        //var p = Math.pow(this.ancestral,.3333)*Math.pow(this.central,3)*Math.pow(this.dining[0],3)*Math.pow(this.library,2)*Math.pow(this.metra[0],1);
-        //return Math.pow(p,1/9.3333);
-        //var p = this.ancestral*.3333333+this.central*3+this.dining[0]*3+this.library*2+this.metra[0];
-        //return p/9.3333;
         var OFFSET = 0.00107324475;
         var p = Math.pow(this.ancestral+OFFSET,.3333)*Math.pow(this.central+OFFSET,3)*Math.pow(this.dining[0]+OFFSET,3)*Math.pow(this.library+OFFSET,2)*Math.pow(this.metra[0]+OFFSET,1);
         return Math.pow(p,1/9.3333);
@@ -105,7 +101,7 @@ $(document).ready(function(){
             +"<b>Dining: </b>"+Math.floor(curr.dining[0]*COORDTOMET)+"m<br/><i>"+curr.dining[1]+"</i><br/>"
             +"<b>Regenstein: </b>"+Math.floor(curr.library*COORDTOMET)+"m<br/>"
             +"<b>Metra: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
-            +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong>"+
+            +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong></span>"+
             "</div>");
     }
     $("body").append("<nav><button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button></nav>");
@@ -137,35 +133,43 @@ $(document).ready(function(){
     $(window).resize();
     $(document).keypress(function(e){
         if(e.ctrlKey && e.which == 19){
+            var segs = parseInt(prompt("Into how many segments?"),10);
+            $("div").css("border-color","black");
             var hei = OPARR.length;
             var len = OPARR[0].length;
             for (var i=0, j=0; i<hei && j<len; j++, i=(j==len)?i+1:i,j=(j==len)?j=0:j) {
                 var k = i*len + j;
-                $("div").slice(k,k+1).attr("data-grouping",categorize(OPARR[i][j].score,min,max,20).toString());
+                $("div").slice(k,k+1)
+                    .attr("data-grouping",categorize(OPARR[i][j].score,min,max,segs).toString())
+                    .find("span").html("<b>Class: </b><em style='color:"+redness(OPARR[i][j].score)+"'>"+categorize(OPARR[i][j].score,min,max,segs)+"</em>");
             }
             for (var i=0, j=0; i<hei && j<len; j++, i=(j==len)?i+1:i,j=(j==len)?j=0:j) {
                 var k = i*len + j;
                 if((k-len) >= 0){
                     if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k-len,k-len+1).attr("data-grouping")){
-                        $("div").slice(k,k+1).css("border-top","none");
+                        $("div").slice(k,k+1).css("border-top",".5px solid transparent");
                     }
                 }
                 if((k+len) < hei*len){
                     if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k+len,k+len+1).attr("data-grouping")){
-                        $("div").slice(k,k+1).css("border-bottom","none");
+                        $("div").slice(k,k+1).css("border-bottom",".5px solid transparent");
                     }
                 }
                 if(((k+1)%len) != 0){
                     if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k+1,k+2).attr("data-grouping")){
-                        $("div").slice(k,k+1).css("border-right","none");
+                        $("div").slice(k,k+1).css("border-right",".5px solid transparent");
                     }
                 }
                 if((k%len) != 0){
                     if($("div").slice(k,k+1).attr("data-grouping")==$("div").slice(k-1,k).attr("data-grouping")){
-                        $("div").slice(k,k+1).css("border-left","none");
+                        $("div").slice(k,k+1).css("border-left",".5px solid transparent");
                     }
                 }
             }
+            $("div").off("hover").hover(function(){
+                $("div[data-grouping='"+$(this).attr("data-grouping")+"']").each(function(){$(this).toggleClass("cohover")});
+            });
+            $("*").removeClass("cohover");
         }
     });
 });
