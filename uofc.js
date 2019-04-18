@@ -1,10 +1,31 @@
 var UPLEFT = new Place(41.79492, -87.60619);
 var BOTRIGHT = new Place(41.78329, -87.58944);
 var ANCESTRAL = new Place(41.80097, -87.58549);
-var METRA = [[new Place(41.80089, -87.58715),"51st/53rd St. (Hyde Park)"],
-             [new Place(41.79287, -87.58773),"55th - 56th - 57th St."],
-             [new Place(41.78734, -87.58886),"Univ. of Chicago/59th St"],
-             [new Place(41.77919, -87.59087),"63rd St."]];
+var METRA = [[new Place(41.7955918, -87.590176),'[55] 55th Street & Blackstone'],
+    [new Place(41.794872, -87.605782),'[55] 55th Street & Cottage Grove'],
+    [new Place(41.7947371, -87.5918142),'[55] 55th Street & Dorchester'],
+    [new Place(41.7950767, -87.6040402),'[55] 55th Street & Drexel'],
+    [new Place(41.7949276, -87.6009732),'[55] 55th Street & Ellis'],
+    [new Place(41.7950348, -87.5930176),'[55] 55th Street & Kenwood'],
+    [new Place(41.795178, -87.5947959),'[55] 55th Street & Kimbark'],
+    [new Place(41.795113, -87.587746),'[55] 55th Street & Lake Park'],
+    [new Place(41.7949618, -87.5979088),'[55] 55th Street & University'],
+    [new Place(41.795158, -87.596375),'[55] 55th Street & Woodlawn'],
+    [new Place(41.78962, -87.586575),'[6] 5800 S Stony Island'],
+    [new Place(41.786118, -87.587143),'[6/59] 60th Street & Stony Island'],
+    [new Place(41.7840467, -87.6012646),'[59] 61st Street & Ellis'],
+    [new Place(41.784176, -87.602615),'[59] 61st Street & Ingleside'],
+    [new Place(41.7842573, -87.592937),'[59] 61st Street & Kenwood'],
+    [new Place(41.7841183, -87.5959908),'[59] 61st Street & Woodlawn'],
+    [new Place(41.7841369, -87.6061299),'[59] Cottage Grove & 61st Street'],
+    [new Place(41.785969, -87.591408),'[59] Dorchester & 60th Street'],
+    [new Place(41.784319, -87.5914962),'[59] Dorchester & 61st Street'],
+    [new Place(41.7916058, -87.5837156),'[55] Museum of Science & Industry'],
+    [new Place(41.795429, -87.583878),'[6] S Hyde Park & 55th Street'],
+    [new Place(41.793316, -87.583801),'[6/55] S Hyde Park & 56th Street'],
+    [new Place(41.79134, -87.58663),'[6] Stony Island & 57th Drive'],
+    [new Place(41.788086, -87.586533),'[6] Stony Island & 59th Street'],
+    [new Place(41.7839038, -87.5866339),'[6] Stony Island & 61st Street']];
 var CENTRAL = new Place(41.78959, -87.59967);
 var DINING = [[new Place(41.79465, -87.59866),"Campus North Residential Commons"],
               [new Place(41.79192, -87.59846),"Bartlett Dining Commons"],
@@ -38,10 +59,10 @@ function Fragment(l,k){
         return c[0];
     };
     this.m = function(){
-        var c = [[this.to(METRA[0][0]),METRA[0][1]],
-            [this.to(METRA[1][0]),METRA[1][1]],
-            [this.to(METRA[2][0]),METRA[2][1]],
-            [this.to(METRA[3][0]),METRA[3][1]]];
+        var c = [];
+        for(i in METRA){
+            c.push([this.to(METRA[i][0]),METRA[i][1]]);
+        }
         c.sort(function(a,b){return a[0]-b[0]});
         return c[0];
     };
@@ -100,11 +121,11 @@ $(document).ready(function(){
             +"<b>Campus Center: </b>"+Math.floor(curr.central*COORDTOMET)+"m<br/>"
             +"<b>Dining: </b>"+Math.floor(curr.dining[0]*COORDTOMET)+"m<br/><i>"+curr.dining[1]+"</i><br/>"
             +"<b>Regenstein: </b>"+Math.floor(curr.library*COORDTOMET)+"m<br/>"
-            +"<b>Metra: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
+            +"<b>CTA: </b>"+Math.floor(curr.metra[0]*COORDTOMET)+"m<br/><i>"+curr.metra[1]+"</i><br/>"
             +"<strong>"+(Math.floor(curr.lat*100000)/100000)+"&deg;N, "+(Math.floor(-curr.long*100000)/100000)+"&deg;W</strong></span>"+
             "</div>");
     }
-    $("body").append("<nav><button id='m'>Metra</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button></nav>");
+    $("body").append("<nav><button id='m'>CTA</button><button id='c'>Campus Center</button><button id='d'>Dining</button><button id='r'>Regenstein</button><button id='s'>Score</button></nav>");
     $("div").css({"width" : w,
                   "height": h})
         .hover(function(){
