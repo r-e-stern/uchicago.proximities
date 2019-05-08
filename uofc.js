@@ -70,8 +70,8 @@ function Fragment(l,k){
     this.metra = this.m();
     this.s = function(){
         var OFFSET = 0.00107324475;
-        var p = Math.pow(this.ancestral+OFFSET,.3333)*Math.pow(this.central+OFFSET,3)*Math.pow(this.dining[0]+OFFSET,3)*Math.pow(this.library+OFFSET,2)*Math.pow(this.metra[0]+OFFSET,1);
-        return Math.pow(p,1/9.3333);
+        var p = Math.pow(this.ancestral+OFFSET,.3333)*Math.pow(this.central+OFFSET,2)*Math.pow(this.dining[0]+OFFSET,3)*Math.pow(this.library+OFFSET,2)*Math.pow(this.metra[0]+OFFSET,1);
+        return Math.pow(p,1/8.3333);
     };
     this.score = this.s();
 }
